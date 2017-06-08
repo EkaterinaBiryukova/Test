@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using System.Globalization;
 
 namespace TestStack
 {
-    class myStack
+    public class myStack
     {
         const int _IS_DIGIT_ = 2;
         const int _IS_OPERATION_ = 1;
@@ -25,7 +26,14 @@ namespace TestStack
             element = new Object[tmp.Length];
             foreach (var s in tmp)
             {
-                myPush(s);
+                try
+                {
+                    myPush(s);
+                }
+                catch (myException)
+                {
+                    throw;
+                }
             }
         }
 
@@ -35,16 +43,18 @@ namespace TestStack
         /// <param name="newElement">Object</param>
         public void myPush(Object newElement) // insert
         {
+            Console.WriteLine("newElement '{0}'", newElement);
             // if unknown symbol dont put in stack
-            if (ParseSymbol(newElement) == _IS_UNKNOWN_) return;
+            if (ParseSymbol(newElement) == _IS_UNKNOWN_) throw new myException("Unknown symbols");
             if (ParseSymbol(newElement) == _IS_OPERATION_)
             {
+                if (size < 2) throw new myException("Not enough data for operation");
 
-                int result = 0;
-                int a, b;
+                double result = .0;
+                double a, b;
 
-                b = Convert.ToInt32(myPop());
-                a = Convert.ToInt32(myPop());
+                b = Convert.ToDouble(myPop(), CultureInfo.InvariantCulture); //ignorit zapjatuu, tol'ko to4ka!!!
+                a = Convert.ToDouble(myPop(), CultureInfo.InvariantCulture);
                 switch (newElement.ToString())
                 {
                     case "+": result = a + b; break;
@@ -97,8 +107,9 @@ namespace TestStack
                 case "*":
                 case "/": return _IS_OPERATION_;
                 default:
-                    string pattern = "[0-9]";
-                    if (!Regex.IsMatch(element.ToString(), pattern)) return _IS_UNKNOWN_;
+                    double d;
+                    if (!Double.TryParse(element.ToString(), NumberStyles.Number, CultureInfo.InvariantCulture, out d)
+                        || !Double.TryParse(element.ToString(), out d)) return _IS_UNKNOWN_;
                     return _IS_DIGIT_;
             }
 
