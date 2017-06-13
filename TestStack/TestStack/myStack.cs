@@ -22,6 +22,7 @@ namespace TestStack
         }
         public myStack(string input_string)
         {
+            input_string = input_string.ToString().Replace('.', ','); // in simple way TryParse wait number with ',', not with '.', so replace '.' if its nessesary
             string[] tmp = input_string.Split(' ');
             element = new Object[tmp.Length];
             foreach (var s in tmp)
@@ -43,7 +44,6 @@ namespace TestStack
         /// <param name="newElement">Object</param>
         public void myPush(Object newElement) // insert
         {
-            Console.WriteLine("newElement '{0}'", newElement);
             // if unknown symbol dont put in stack
             if (ParseSymbol(newElement) == _IS_UNKNOWN_) throw new myException("Unknown symbols");
             if (ParseSymbol(newElement) == _IS_OPERATION_)
@@ -53,8 +53,10 @@ namespace TestStack
                 double result = .0;
                 double a, b;
 
-                b = Convert.ToDouble(myPop(), CultureInfo.InvariantCulture); //ignorit zapjatuu, tol'ko to4ka!!!
-                a = Convert.ToDouble(myPop(), CultureInfo.InvariantCulture);
+                //b = Convert.ToDouble(myPop(), CultureInfo.InvariantCulture); //ignorit zapjatuu, tol'ko to4ka!!!
+                //a = Convert.ToDouble(myPop(), CultureInfo.InvariantCulture);
+                b = Convert.ToDouble(myPop()); //ignorit zapjatuu, tol'ko to4ka!!!
+                a = Convert.ToDouble(myPop());
                 switch (newElement.ToString())
                 {
                     case "+": result = a + b; break;
@@ -108,8 +110,10 @@ namespace TestStack
                 case "/": return _IS_OPERATION_;
                 default:
                     double d;
-                    if (!Double.TryParse(element.ToString(), NumberStyles.Number, CultureInfo.InvariantCulture, out d)
+                    //if (!Double.TryParse(element.ToString(), NumberStyles.Number, CultureInfo.InvariantCulture, out d)
+                    if (!Double.TryParse(element.ToString(), out d)
                         || !Double.TryParse(element.ToString(), out d)) return _IS_UNKNOWN_;
+                    
                     return _IS_DIGIT_;
             }
 
