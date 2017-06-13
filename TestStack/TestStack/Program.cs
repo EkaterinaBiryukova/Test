@@ -12,11 +12,6 @@ namespace TestStack
         static void Main(string[] args)
         {
 
-            string str = Console.ReadLine();
-            
-            Console.WriteLine("'{0}', compare to empty string - {1}", str, str.Equals(""));
-
-
             Console.WriteLine("Input string. Type 'exit' for exit");
             string input_string = Console.ReadLine();
             while (!input_string.Equals("exit"))

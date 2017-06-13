@@ -11,15 +11,14 @@ namespace UnitTest_TestStack
         public void TestCorrecString()
         {
             myStack tst = new myStack("5 5 +");
-            int expected = 10;
+            double expected = 10;
             Assert.AreEqual(expected, tst.myPop(), "test passed");
         }
         [TestMethod]
+        [ExpectedException(typeof(myException))] // ожидает что теструемый модуль вернет исключение при таком входе
         public void TestIncorrectString()
         {
             myStack tst = new myStack("5 +");
-            //Assert.
-            // exception returns
         }
     }
 }

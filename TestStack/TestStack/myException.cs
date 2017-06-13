@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace TestStack
 { //Serializable - превращает объект в поток байтов
     [Serializable]
-    class myException : ApplicationException
+    public class myException : ApplicationException
     {
         public myException () { }
         public myException (string message) : base(message) { } // base() - обращение к конструтору базового класса
